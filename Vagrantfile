@@ -63,16 +63,41 @@ Vagrant::Config.run do |config|
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
   #
-  # config.vm.provision :chef_solo do |chef|
-  #   chef.cookbooks_path = "cookbooks"
-  #   chef.roles_path = "roles"
-  #   chef.data_bags_path = "data_bags"
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = "cookbooks"
+    chef.roles_path = "roles"
+    chef.data_bags_path = "data_bags"
 
-  #   chef.add_recipe "hello-world"
+    chef.add_recipe "hello-world"
+    chef.add_recipe "rvm::system"
+    chef.add_recipe "runit"
+    chef.add_recipe "nginx"
 
-  #   # You may also specify custom JSON attributes:
-  #   chef.json = {}
-  # end
+    # You may also specify custom JSON attributes:
+    chef.json = {
+      :rvm => {
+        :global_gems => [
+          { 'name' => 'bundler' },
+          { 'name' => 'chef' },
+        ]
+      },
+      :nginx => {
+        :version => "1.2.7",
+        :worker_processes => 4,
+        :worker_connections => "8192",
+        :worker_rlimit_nofile => "32768",
+        :client_max_body_size => "34m",
+        :event => "epoll",
+        :install_method => "source",
+        :source => {
+          :prefix => "/opt/nginx",
+          :modules => [
+            "http_ssl_module", "http_gzip_static_module"
+          ]
+        }
+      }
+    }
+  end
 
   # Enable provisioning with chef server, specifying the chef server URL,
   # and the path to the validation key (relative to this Vagrantfile).

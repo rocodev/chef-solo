@@ -2,15 +2,16 @@
 [ "$1" = "-n" ] && DRY_RUN=1
 
 # ==================================================
-# 1. Install rbenv and ruby 1.9.3-p392
+# 1. Install rvm and ruby 1.9.3-p327
 # 2. Install bundler chef gems
+# 3. Setup chef user for chef-solo automation
 
 # ==================================================
 # Config
-ruby_version='1.9.3-p392'
+ruby_version='ruby-1.9.3-p327'
 gems=(bundler chef)
-rbenv_user=rbenv
-rbenv_group=rbenv
+chef_user=chef
+chef_group=chef
 
 # ==================================================
 # Helpers
@@ -82,110 +83,66 @@ exec 2> >(cat_error)
   exit 1
 }
 
-mkdir -p tmp
-
-
-step '== NOTICE =='
-info 'After installation, ' \
-  ' please append content of tmp/rbenv-profile.sh to your bashrc or zshrc.' \
-  ' Also comment out `[ -z "$PS1" ] && return` in .bashrc'
-
-info "Add your self to group $rbenv_group so that you can manage rbenv"
-info sudo gpasswd -a my_login_id "$rbenv_group"
-
-step "Create user ${rbenv_user}:${rbenv_group}"
-run groupadd -f "$rbenv_group"
-if ! id "$rbenv_user" &> /dev/null; then
-  run useradd -r -d /usr/local/rbenv -g "$rbenv_group" -M "$rbenv_user" -s /bin/bash
-fi
-
 step "Install nessesary packages"
 run apt-get update
-run aptitude install -y \
-  openssh-server \
-  build-essential zlib1g-dev \
-  libssl-dev openssl \
-  libreadline-dev \
-  sqlite3 libsqlite3-dev \
-  libxslt-dev libxml2-dev \
-  curl wget git-core \
+run aptitude install -y git-core libgdbm-dev pkg-config libffi-dev \
+  build-essential openssl libreadline6 libreadline6-dev zlib1g zlib1g-dev \
+  libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev \
+  autoconf libc6-dev ncurses-dev automake libtool bison ssl-cert wget curl \
   libmysqlclient-dev
 
-step "Install/Upgrade rbenv in /usr/local/rbenv"
-if [ -d /usr/local/rbenv ]; then
-  info 'install rbenv'
-  run pushd /usr/local/rbenv
-  run git pull
-  run popd
+step "Install/Upgrade rvm in /usr/local/rvm"
+if [ -d /usr/local/rvm ]; then
+  info 'upgrade rvm'
+  run rvm get stable
 else
-  info 'upgrade rbenv'
-  run git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
+  info 'install rvm'
+  run curl -L https://get.rvm.io | bash  -s -- --branch stable --version head
 fi
-info 'generate profile file'
-echo 'export RBENV_ROOT=/usr/local/rbenv' > tmp/rbenv-profile.sh
-echo 'export PATH="$RBENV_ROOT/bin:$PATH"' >> tmp/rbenv-profile.sh
-echo 'eval "$(rbenv init -)"' >> tmp/rbenv-profile.sh
-info '== begin of rbenv-profile.sh =='
-cat tmp/rbenv-profile.sh
-info '== end of rbenv-profile.sh =='
-if [ -d /usr/local/rbenv ]; then
-  info source tmp/rbenv-profile.sh
-  source tmp/rbenv-profile.sh || true
-fi
-run cp -f tmp/rbenv-profile.sh /etc/profile.d
-if ! grep 'rbenv init' /etc/skel/.bashrc &> /dev/null; then
-  run 'sed -i "1asource /etc/profile.d/rbenv-profile.sh" /etc/skel/.bashrc'
+
+run source /etc/profile.d/rvm.sh
+
+if ! grep 'rvm' /etc/skel/.bashrc &> /dev/null; then
+  run 'sed -i "1asource /etc/profile.d/rvm.sh" /etc/skel/.bashrc'
 fi
 run 'touch "/root/.bashrc"'
-if ! grep 'rbenv init' "/root/.bashrc" &> /dev/null; then
-  run 'sed -i "1asource /etc/profile.d/rbenv-profile.sh" /root/.bashrc'
-fi
-run 'touch "/root/.zshenv"'
-if ! grep 'rbenv init' "/root/.zshenv" &> /dev/null; then
-  run 'cat tmp/rbenv-profile.sh >> "/root/.zshenv"'
-fi
-
-step "Install/Upgrade rbenv-vars in /usr/local/rbenv/plugins/rbenv-vars"
-if [ -d /usr/local/rbenv/plugins/rbenv-vars ]; then
-  info 'install rbenv-vars'
-  pushd /usr/local/rbenv/plugins/rbenv-vars
-  run git pull
-  popd
-else
-  info 'upgrade rbenv-vars'
-  run mkdir -p /usr/local/rbenv/plugins/
-  run git clone git://github.com/sstephenson/rbenv-vars.git /usr/local/rbenv/plugins/rbenv-vars
-fi
-
-step "Install/Upgrade ruby-build in /usr/local/rbenv/plugins/ruby-build"
-if [ -d /usr/local/rbenv/plugins/ruby-build ]; then
-  info 'install ruby-build'
-  pushd /usr/local/rbenv/plugins/ruby-build
-  run git pull
-  popd
-else
-  info 'upgrade ruby-build'
-  run mkdir -p /usr/local/rbenv/plugins/
-  run git clone git://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build
+if ! grep 'rvm' "/root/.bashrc" &> /dev/null; then
+  run 'sed -i "1asource /etc/profile.d/rvm.sh" /root/.bashrc'
 fi
 
 step "Install ruby $ruby_version"
-if [ -f "/usr/local/rbenv/versions/$ruby_version/bin/ruby" ]; then
+if [ -f "/usr/local/rvm/rubies/$ruby_version" ]; then
   info "ruby $ruby_version is already installed"
 else
   info 'installation may take a long time, restart bootstrap if failed.'
-  run rbenv install "$ruby_version" # --with-openssl-dir=/usr/local
-  run rbenv rehash
+  run rvm install "$ruby_version"
 fi
-run rbenv global "$ruby_version"
+run rvm default "$ruby_version"
 info `ruby -v 2>&1`
 
 step "Setup gems ${gems[*]}"
 test -s ~/.gemrc || echo 'gem: --no-rdoc --no-ri' >> ~/.gemrc
 run gem install "${gems[@]}"
-run rbenv rehash
 
-step "Setup permission of /usr/local/rbenv"
-run chown -R "$rbenv_user:$rbenv_group" /usr/local/rbenv
-run chmod -R u=rwX,g=rwX,o=rX /usr/local/rbenv
-run 'find /usr/local/rbenv -type d -exec chmod g+s "{}" \;'
+step "Create user ${chef_user}:${chef_group}"
+run groupadd -r -f "$chef_group"
+if ! id "$chef_user" &> /dev/null; then
+  run useradd -r -g "$chef_group" -m "$chef_user" -s /bin/bash
+fi
+
+step "Setup chef deploy key"
+if [ ! -d /home/chef/.ssh ]; then
+  run mkdir -p /home/chef/.ssh
+  echo "" > /home/chef/.ssh/authorized_keys
+  run chown -R "$chef_user:$chef_group" /home/chef/.ssh
+  run chmod 0700 /home/chef/.ssh
+fi
+
+step "Setup permission for chef no password sudo running chef-solo"
+echo "chef ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/chef
+run chmod 0440 /etc/sudoers.d/chef
+
+step "Configure ssh to prevent password & root logins"
+sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+run service ssh restart

@@ -8,7 +8,7 @@
 
 # ==================================================
 # Config
-ruby_version='ruby-1.9.3-p327'
+ruby_version='ruby-1.9.3-p392'
 gems=(bundler chef)
 chef_user=chef
 chef_group=chef

@@ -2,6 +2,16 @@
 [ "$1" = "-n" ] && DRY_RUN=1
 
 # ==================================================
+# Check
+
+if [ ! -f /root/.bootstrapped ]; then
+  echo "Start bootstraping system..."
+else
+  echo "The system is bootstrapped."
+  exit 0
+fi
+
+# ==================================================
 # 1. Install rvm and ruby 1.9.3-p327
 # 2. Install bundler chef gems
 # 3. Setup chef user for chef-solo automation
@@ -146,3 +156,5 @@ step "Configure ssh to prevent password & root logins"
 sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
 sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
 run service ssh restart
+
+echo "The system is bootstrapped." > /root/.bootstrapped

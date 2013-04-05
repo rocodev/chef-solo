@@ -69,32 +69,20 @@ Vagrant::Config.run do |config|
     chef.data_bags_path = "data_bags"
 
     chef.add_recipe "hello-world"
+    # base-system
     chef.add_recipe "rvm::system"
-    chef.add_recipe "runit"
-    chef.add_recipe "nginx"
+    # webserver
+    chef.add_role "webserver"
 
     # You may also specify custom JSON attributes:
     chef.json = {
+      # base
       :rvm => {
+        :default_ruby => 'ruby-1.9.3-p392',
         :global_gems => [
           { 'name' => 'bundler' },
           { 'name' => 'chef' },
         ]
-      },
-      :nginx => {
-        :version => "1.2.7",
-        :worker_processes => 4,
-        :worker_connections => "8192",
-        :worker_rlimit_nofile => "32768",
-        :client_max_body_size => "34m",
-        :event => "epoll",
-        :install_method => "source",
-        :source => {
-          :prefix => "/opt/nginx",
-          :modules => [
-            "http_ssl_module", "http_gzip_static_module"
-          ]
-        }
       }
     }
   end

@@ -7,8 +7,8 @@ default_run_options[:pty] = true
 depend :remote, :command, 'ruby'
 
 ssh_options[:forward_agent] = true
-set :application, "agilysys-chef-repo"
-
+set :application, "rocodev-chef-repo"
+set :deploy_to, "/srv/rocodev-chef-repo"
 set :scm, :git
 
 # Package the repository and upload to server

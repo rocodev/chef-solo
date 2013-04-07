@@ -16,8 +16,14 @@ default_attributes(
     :source => {
       :prefix => "/opt/nginx",
       :modules => [
-        "http_ssl_module", "http_gzip_static_module",
+        "http_ssl_module", "http_gzip_static_module", "passenger"
       ]
+    },
+    :passenger => {
+      :version => "3.0.19",
+      :root => "/usr/local/rvm/gems/ruby-1.9.3-p392/gems/passenger-3.0.19",
+      :gem_binary => "/usr/local/rvm/rubies/ruby-1.9.3-p392/bin/gem",
+      :max_pool_size => "4"
     }
   }
 )

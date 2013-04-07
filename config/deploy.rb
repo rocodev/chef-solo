@@ -85,7 +85,7 @@ namespace :deploy do
     top.chef.default
   end
   task :symlink_cache_dir do
-    run ["mkdir -p #{shared_path}/cache",
+    run ["mkdir -p #{shared_path}/cache/checksums #{shared_path}/cache/files #{shared_path}/cache/backup",
          "ln -sfn #{shared_path}/cache #{current_release}/.chef/solo/cache"].join(' && ')
   end
   task :setup_directory_owner do

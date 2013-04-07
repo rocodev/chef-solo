@@ -72,22 +72,11 @@ Vagrant::Config.run do |config|
     chef.roles_path = "roles"
     chef.data_bags_path = "data_bags"
 
-    # base-system
-    chef.add_recipe "rvm::system"
-    # webserver
+    chef.add_role "base-system"
     chef.add_role "webserver"
 
     # You may also specify custom JSON attributes:
-    chef.json = {
-      # base
-      :rvm => {
-        :default_ruby => 'ruby-1.9.3-p392',
-        :global_gems => [
-          { 'name' => 'bundler' },
-          { 'name' => 'chef' },
-        ]
-      }
-    }
+    chef.json = { }
   end
 
   # Enable provisioning with chef server, specifying the chef server URL,

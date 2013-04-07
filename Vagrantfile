@@ -72,6 +72,8 @@ Vagrant::Config.run do |config|
     chef.roles_path = "roles"
     chef.data_bags_path = "data_bags"
 
+    chef.log_level = :debug
+
     chef.add_role "base-system"
     chef.add_role "webserver"
 

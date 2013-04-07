@@ -6,4 +6,4 @@
 /.chef/solo/cache/backup
 /.vagrant
 /json/servers
-
+*.swp

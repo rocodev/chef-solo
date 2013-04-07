@@ -25,5 +25,8 @@ default_attributes(
       :gem_binary => "/usr/local/rvm/rubies/ruby-1.9.3-p392/bin/gem",
       :max_pool_size => "4"
     }
+  },
+  :nodejs => {
+    :make_threads => 2,
   }
 )

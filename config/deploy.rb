@@ -106,8 +106,7 @@ namespace :chef do
 
   task :default do
     generate_json
-    cmd = ["cd #{current_release}",
-           "chef-solo -c #{current_release}/solo.rb -j json/servers/$CAPISTRANO:HOST$.json -l info"].join(' && ')
+    cmd = ["chef-solo -c #{current_release}/solo.rb -j #{current_release}/json/servers/$CAPISTRANO:HOST$.json -l debug > #{shared_path}/log/#{release_name}.log"].join(' && ')
     run "#{try_sudo} bash -l -c '#{cmd}'"
   end
 end

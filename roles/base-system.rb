@@ -1,6 +1,8 @@
 name "base-system"
 
-run_list [ "recipe[users]", "recipe[rvm::system]" ]
+run_list [ "recipe[base]",
+           "recipe[users]",
+           "recipe[rvm::system]" ]
 
 default_attributes(
   :rvm => {

@@ -8,3 +8,4 @@
 #
 
 include_recipe "users::chef"
+include_recipe "users::apps"

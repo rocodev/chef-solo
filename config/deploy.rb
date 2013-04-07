@@ -23,6 +23,13 @@ set :copy_exclude, ['.git/*', 'vendor/*']
 # set :checkout, 'export'
 # set :deploy_via, :remote_cache
 
+set :default_environment, {
+  'PATH' => "/usr/local/rvm/gems/ruby-1.9.3-p392/bin:/usr/local/rvm/gems/ruby-1.9.3-p392@global/bin:/usr/local/rvm/rubies/ruby-1.9.3-p392/bin:/usr/local/rvm/bin:$PATH",
+  'RUBY_VERSION' => 'ruby 1.9.3-p392',
+  'GEM_HOME'     => '/usr/local/rvm/gems/ruby-1.9.3-p392',
+  'GEM_PATH'     => '/usr/local/rvm/gems/ruby-1.9.3-p392'
+}
+
 set :branch, 'master'
 set :keep_releases, 2
 set :user, "ubuntu"

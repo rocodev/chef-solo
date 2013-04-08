@@ -1,7 +1,7 @@
 user 'chef'
 host '106.187.96.10'
 port 22
-ssh_options(:keys => '~/.ssh/tech_deploy_key')
+ssh_options(:keys => '~/.ssh/chef-deploy-private-key')
 
 node.set[:name] = 'linode'
 

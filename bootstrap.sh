@@ -143,7 +143,7 @@ fi
 step "Setup chef deploy key"
 if [ ! -d /home/chef/.ssh ]; then
   run mkdir -p /home/chef/.ssh
-  echo "chef-deploy-key" > /home/chef/.ssh/authorized_keys
+  echo "chef-deploy-public-key" > /home/chef/.ssh/authorized_keys
   run chown -R "$chef_user:$chef_group" /home/chef/.ssh
   run chmod 0700 /home/chef/.ssh
 fi

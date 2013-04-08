@@ -19,7 +19,7 @@ class Server < Thor
 
     desc host, "dump json for #{host} into json/servers/#{host}.json"
 
-    define_method host do
+    define_method host.gsub('-', '_') do
       File.open("json/servers/#{host}.json", 'w') do |out|
         out.write(JSON.dump(json))
       end

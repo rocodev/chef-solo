@@ -5,6 +5,9 @@ run_list [ "recipe[memcached]",
            "recipe[nodejs]" ]
 
 default_attributes(
+  :memcached => {
+    :memory => 64
+  },
   :nginx => {
     :version => "1.2.7",
     :worker_processes => 4,

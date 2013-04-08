@@ -20,6 +20,7 @@
 include_recipe "runit"
 
 gem_package "god" do
+  gem_binary("/usr/local/rvm/rubies/#{node[:rvm][:default_ruby]}/bin/gem")
   action :install
 end
 

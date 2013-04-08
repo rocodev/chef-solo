@@ -1,6 +1,7 @@
 #!/bin/sh
 exec 2>&1
 
-trap 'kill -HUP %1' 1 2 13 15
+ps aux|grep bin/god|grep -v grep|awk '{print $2}'|xargs kill -9
 
-/usr/bin/god -D -c /etc/god/master.god --no-syslog & wait
+export PATH=/usr/local/rvm/gems/<%= node[:rvm][:default_ruby] %>/bin:/usr/local/rvm/gems/<%= node[:rvm][:default_ruby] %>@global/bin:/usr/local/rvm/rubies/<%= node[:rvm][:default_ruby] %>/bin:/usr/local/rvm/bin:$PATH
+/usr/local/rvm/gems/<%= node[:rvm][:default_ruby] %>/bin/god -D -c /etc/god/master.god --no-syslog & wait

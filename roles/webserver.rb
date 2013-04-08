@@ -14,7 +14,6 @@ default_attributes(
     :event => "epoll",
     :install_method => "source",
     :source => {
-      :prefix => "/opt/nginx",
       :modules => [
         "http_ssl_module", "http_gzip_static_module", "passenger"
       ]

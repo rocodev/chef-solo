@@ -1,5 +1,5 @@
 user 'chef'
-host '54.248.242.249'
+host 'ec2-54-249-186-21.ap-northeast-1.compute.amazonaws.com'
 port 22
 ssh_options(:keys => '~/.ssh/tech_deploy_key')
 

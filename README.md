@@ -1,8 +1,26 @@
 # rocodev-chef-solo
 
+## Setup ssh key for deploy
+
+可自行決定產生一組新的 ssh key 來給 chef deploy 用或使用現有的 ssh key，在專案裡用指令 `git grep chef-deploy-public-key` 找到的檔案，把 chef-deploy-public-key 字串更換成要 deploy 用的 public key
+
+    ssh-keygen -t rsa -C "user@example.com" -f ~/.ssh/chef_deploy_key
+
+## Bootstrap server for chef deploy ready
+
+使用 Vagrant 或 Linode、AWS EC2 剛建立的 Ubuntu Server，都需先上傳並執行 bootstrap.sh，安裝 rvm、ruby、bundler、chef，和設定 chef deploy 跑 chef-solo 的基本環境。由於每次 bootstrap 都要 compile 安裝 ruby 很費時，Vagrant 和 AWS EC2 可在跑過 bootstrap.sh 後先建立 chef deploy ready 的映像檔之後直接使用。
+
+## Deploy server running chef-solo provision
+
+Linode、AWS EC2 開好並 bootstrapped ready 的伺服器在 servers 下建立設定檔，執行 cap deploy 便會進行 chef-solo 自動化部署，一次可指定一個或多個伺服器，更多使用方式請看 HOWTO.md。
+
+    cap deploy:setup servers/awsec2.rb servers/linode.rb
+    cap deploy servers/awsec2.rb servers/linode.rb
+
 ## Vagrant
 
-不要使用 rubygems gem install，請到官網抓最新的套件檔安裝 http://downloads.vagrantup.com/
+* 安裝 VirtualBox https://www.virtualbox.org/wiki/Downloads
+* 安裝 Vagrant http://downloads.vagrantup.com
 
 ## Cookbooks
 

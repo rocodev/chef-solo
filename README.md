@@ -1,6 +1,10 @@
 # rocodev-chef-solo
 
-## cookbooks
+## Vagrant
+
+不要使用 rubygems gem install，請到官網抓最新的套件檔安裝 http://downloads.vagrantup.com/
+
+## Cookbooks
 
 1. 一般會用到的通用套件盡量使用 http://community.opscode.com/ 上的，透過以下指令安裝：
 
@@ -17,12 +21,16 @@
         knife cookbook create tech-base -o cookbooks/.
 
 * base     - 在伺服器上安裝一些基本或必要的套件，及系統設定。
-* users    - 使用 rbenv 安裝伺服器上的 ruby 及 ruby gems。
-* god-apps - 設定伺服器上可 sudo 的帳號群組，及特定 sudo 用途的 config。
+* users    - 建立管理使用者賬號，以及登入用的 ssh authorized_keys 和設定 sudo 權限。
+* god-apps - 管理和啓動要用 god 監控的程序。
 
-cookbooks 照以上三種方式管理，一開 https://gitlab.techbang.com/systems/techbang-chef-solo/tree/master/cookbooks 看，就可以一目了然的知道 cookbook 是安裝自哪邊，或者是否自己有修改 community cookbook，升級到 community cookbook 時要注意修改過的會被覆蓋掉，[more cookbook usage](https://gitlab.techbang.com/systems/techbang-chef-solo/tree/readme/cookbooks/README.md)。
+4. 直接修改 community 的 cookbook 並 commit：
 
-## roles
+* god      - 修正相容 rvm 的使用環境。
+
+cookbooks 照以上方式管理，使用網頁界面或 Git GUI 看 cookbooks 列表，就可以一目了然的知道 cookbook 是安裝自哪邊，或者是否自己有修改 community cookbook，升級到 community cookbook 時要注意修改過的會被覆蓋掉，[more cookbook usage](https://gitlab.techbang.com/systems/techbang-chef-solo/tree/readme/cookbooks/README.md)。
+
+## Roles
 
 * base-system - 伺服器基本環境
 

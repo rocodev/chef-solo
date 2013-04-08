@@ -1,68 +1,43 @@
 god-apps Cookbook
 =================
-TODO: Enter the cookbook description here.
 
-e.g.
-This cookbook makes your favorite breakfast sandwhich.
+Manage and enable applications god config file.
 
 Requirements
 ------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
 
-e.g.
-#### packages
-- `toaster` - god-apps needs toaster to brown your bagel.
+#### platforms
+
+* Ubuntu 12.10
+
+#### cookbooks
+
+- `god` - Require god cookbook to enable application god monitor.
 
 Attributes
 ----------
-TODO: List you cookbook attributes here.
 
-e.g.
 #### god-apps::default
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['god-apps']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
+
+* `god[:applications]` - Specify server god monitor applications
+
+```ruby
+:god => {
+  :applications => ["memcached"]
+}
+```
 
 Usage
 -----
-#### god-apps::default
-TODO: Write usage instructions for each cookbook.
 
-e.g.
-Just include `god-apps` in your node's `run_list`:
+#### god-apps::default
+
+Include `god-apps` in your node's `run_list`:
 
 ```json
 {
-  "name":"my_node",
   "run_list": [
     "recipe[god-apps]"
   ]
 }
 ```
-
-Contributing
-------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
-
-e.g.
-1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
-3. Write you change
-4. Write tests for your change (if applicable)
-5. Run the tests, ensuring they all pass
-6. Submit a Pull Request using Github
-
-License and Authors
--------------------
-Authors: TODO: List authors

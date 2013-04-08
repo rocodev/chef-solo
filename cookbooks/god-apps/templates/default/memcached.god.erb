@@ -1,0 +1,8 @@
+God.watch do |w|
+  w.group = "srv"
+  w.name  = "memcached"
+  w.pid_file = "/var/run/memcached.pid"
+
+  w.start    = "/etc/init.d/memcached start"
+  w.keepalive
+end

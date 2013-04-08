@@ -1,0 +1,41 @@
+# rocodev-chef-solo
+
+## cookbooks
+
+1. 一般會用到的通用套件盡量使用 http://community.opscode.com/ 上的，透過以下指令安裝：
+
+        knife cookbook site install package -o cookbooks/.
+
+2. 如果需要 fork community 的 cookbook 來改，盡量放在 github 上，還有要使用放在 github 上但沒註冊在 community 的 cookbook，Gemfile 裡有加入 [knife-github-cookbooks](https://github.com/websterclay/knife-github-cookbooks) plugin，所以可以透過以下方式安裝：
+
+    必須先切換指令所在資料夾到 cookbooks 底下
+
+        cd cookbooks && knife cookbook github install techbang/nginx
+
+3. 比較客制化內部架構自己建立的 cookbooks 直接建立修改 commit 即可：
+
+        knife cookbook create tech-base -o cookbooks/.
+
+* base     - 在伺服器上安裝一些基本或必要的套件，及系統設定。
+* users    - 使用 rbenv 安裝伺服器上的 ruby 及 ruby gems。
+* god-apps - 設定伺服器上可 sudo 的帳號群組，及特定 sudo 用途的 config。
+
+cookbooks 照以上三種方式管理，一開 https://gitlab.techbang.com/systems/techbang-chef-solo/tree/master/cookbooks 看，就可以一目了然的知道 cookbook 是安裝自哪邊，或者是否自己有修改 community cookbook，升級到 community cookbook 時要注意修改過的會被覆蓋掉，[more cookbook usage](https://gitlab.techbang.com/systems/techbang-chef-solo/tree/readme/cookbooks/README.md)。
+
+## roles
+
+* base-system - 伺服器基本環境
+
+        base
+        users
+        rvm::system
+
+* webserver   - 網站前端伺服器
+
+        memcached
+        nginx + passenger
+        nodejs
+
+* monitor     - 伺服器程序監控
+
+        god-apps

@@ -76,6 +76,7 @@ Vagrant::Config.run do |config|
 
     chef.add_role "base-system"
     chef.add_role "webserver"
+    chef.add_role "monitor"
 
     # You may also specify custom JSON attributes:
     chef.json = { }

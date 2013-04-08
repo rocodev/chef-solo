@@ -15,7 +15,7 @@ Attributes
 
 #### base::default
 
-* `base[:packages]` - Specify server god monitor applications
+* `base[:packages]` - Install extra packages on server.
 
 ```ruby
 :base => {

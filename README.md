@@ -46,7 +46,7 @@ Linode、AWS EC2 開好並 bootstrapped ready 的伺服器在 servers 下建立�
 
 * god - 修正相容 rvm 的使用環境。
 
-cookbooks 照以上方式管理，使用網頁界面或 Git GUI 看 cookbooks 列表，就可以一目了然的知道 cookbook 是安裝自哪邊，或者是否自己有修改 community cookbook，升級到 community cookbook 時要注意修改過的會被覆蓋掉，[more cookbook usage](https://gitlab.techbang.com/systems/techbang-chef-solo/tree/readme/cookbooks/README.md)。
+cookbooks 照以上方式管理，使用網頁界面或 Git GUI 看 cookbooks 列表，就可以一目了然的知道 cookbook 是安裝自哪邊，或者是否自己有修改 community cookbook，升級到 community cookbook 時要注意修改過的會被覆蓋掉，更多使用方式可看 cookbooks 下的 README.md。
 
 ## Roles
 

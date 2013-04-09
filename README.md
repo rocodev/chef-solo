@@ -14,7 +14,7 @@
 
 Linode、AWS EC2 開好並 bootstrapped ready 的伺服器在 servers 下建立設定檔，執行 cap deploy 便會進行 chef-solo 自動化部署，一次可指定一個或多個伺服器，更多使用方式請看 HOWTO.md。
 
-    cap deploy:setup servers/awsec2.rb servers/linode.rb
+    cap deploy:setup servers/awsec2.rb servers/linode.rb # 第一次 deploy 前須先 setup
     cap deploy servers/awsec2.rb servers/linode.rb
 
 ## Vagrant
@@ -30,8 +30,7 @@ Linode、AWS EC2 開好並 bootstrapped ready 的伺服器在 servers 下建立�
 
 2. 如果需要 fork community 的 cookbook 來改，盡量放在 github 上，還有要使用放在 github 上但沒註冊在 community 的 cookbook，Gemfile 裡有加入 [knife-github-cookbooks](https://github.com/websterclay/knife-github-cookbooks) plugin，所以可以透過以下方式安裝：
 
-    必須先切換指令所在資料夾到 cookbooks 底下
-
+        # 必須先切換指令所在資料夾到 cookbooks 底下
         cd cookbooks && knife cookbook github install techbang/nginx
 
 3. 比較客制化內部架構自己建立的 cookbooks 直接建立修改 commit 即可：
@@ -45,7 +44,7 @@ Linode、AWS EC2 開好並 bootstrapped ready 的伺服器在 servers 下建立�
 
 4. 直接修改 community 的 cookbook 並 commit：
 
-* god      - 修正相容 rvm 的使用環境。
+* god - 修正相容 rvm 的使用環境。
 
 cookbooks 照以上方式管理，使用網頁界面或 Git GUI 看 cookbooks 列表，就可以一目了然的知道 cookbook 是安裝自哪邊，或者是否自己有修改 community cookbook，升級到 community cookbook 時要注意修改過的會被覆蓋掉，[more cookbook usage](https://gitlab.techbang.com/systems/techbang-chef-solo/tree/readme/cookbooks/README.md)。
 
@@ -57,13 +56,13 @@ cookbooks 照以上方式管理，使用網頁界面或 Git GUI 看 cookbooks �
         users
         rvm::system
 
-* webserver   - 網站前端伺服器
+* webserver - 網站前端伺服器
 
         memcached
         nginx + passenger
         projects
         nodejs
 
-* monitor     - 伺服器程序監控
+* monitor - 伺服器程序監控
 
         god-apps

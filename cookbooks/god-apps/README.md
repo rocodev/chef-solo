@@ -30,14 +30,4 @@ Attributes
 Usage
 -----
 
-#### god-apps::default
-
-Include `god-apps` in your node's `run_list`:
-
-```json
-{
-  "run_list": [
-    "recipe[god-apps]"
-  ]
-}
-```
+Put customize god config under templates. Use attributes enable god monitor application on server.

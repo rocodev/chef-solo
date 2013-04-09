@@ -2,6 +2,7 @@ name "webserver"
 
 run_list [ "recipe[memcached]",
            "recipe[nginx]",
+           "recipe[projects]",
            "recipe[nodejs]" ]
 
 default_attributes(

@@ -79,7 +79,11 @@ Vagrant::Config.run do |config|
     chef.add_role "monitor"
 
     # You may also specify custom JSON attributes:
-    chef.json = { }
+    chef.json = {
+      :projects => [
+        { :name => "sample", :enabled => true }
+      ]
+    }
   end
 
   # Enable provisioning with chef server, specifying the chef server URL,

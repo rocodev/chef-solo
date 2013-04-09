@@ -40,6 +40,7 @@ Linode、AWS EC2 開好並 bootstrapped ready 的伺服器在 servers 下建立�
 
 * base     - 在伺服器上安裝一些基本或必要的套件，及系統設定。
 * users    - 建立管理使用者賬號，以及登入用的 ssh authorized_keys 和設定 sudo 權限。
+* projects - 管理和啓動專案 nginx 設定檔，
 * god-apps - 管理和啓動要用 god 監控的程序。
 
 4. 直接修改 community 的 cookbook 並 commit：
@@ -60,6 +61,7 @@ cookbooks 照以上方式管理，使用網頁界面或 Git GUI 看 cookbooks �
 
         memcached
         nginx + passenger
+        projects
         nodejs
 
 * monitor     - 伺服器程序監控

@@ -1,5 +1,5 @@
 user 'chef'
-host '106.187.96.10'
+host '106.186.21.137'
 port 22
 ssh_options(:keys => '~/.ssh/chef_deploy_key')
 

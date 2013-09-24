@@ -9,7 +9,8 @@
 
 # Install useful or required packages
 ["git-core", "screen", "vim", "tree", "htop", "ntp",
- "curl", "iftop", "psmisc", "sysstat" ].each do |pkg|
+ "curl", "iftop", "psmisc", "sysstat", "byobu", "mosh",
+ "tmux", "wget", "zip", "unzip" ].each do |pkg|
   package pkg
 end
 

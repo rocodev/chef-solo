@@ -50,7 +50,7 @@ cookbooks 照以上方式管理，使用網頁界面或 Git GUI 看 cookbooks �
 
 ## Roles
 
-* base-system - 伺服器基本環境
+* basebox - 伺服器基本環境
 
         base
         users

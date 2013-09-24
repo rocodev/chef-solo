@@ -5,6 +5,6 @@ ssh_options(:keys => '~/.ssh/chef_deploy_key')
 
 node.set[:name] = 'awsec2'
 
-run_list [ 'role[base-system]',
+run_list [ 'role[basebox]',
            'role[webserver]',
            'role[monitor]' ]

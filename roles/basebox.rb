@@ -6,7 +6,7 @@ run_list [ "recipe[base]",
 
 default_attributes(
   :rvm => {
-    :default_ruby => 'ruby-1.9.3-p392',
+    :default_ruby => 'ruby-1.9.3-p448',
     :global_gems => [
       { 'name' => 'bundler' },
       { 'name' => 'chef' },

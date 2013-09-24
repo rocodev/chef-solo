@@ -12,13 +12,13 @@ else
 fi
 
 # ==================================================
-# 1. Install rvm and ruby 1.9.3-p327
+# 1. Install rvm and ruby 1.9.3-p448
 # 2. Install bundler chef gems
 # 3. Setup chef user for chef-solo automation
 
 # ==================================================
 # Config
-ruby_version='ruby-1.9.3-p392'
+ruby_version='ruby-1.9.3-p448'
 gems=(bundler chef)
 chef_user=chef
 chef_group=chef

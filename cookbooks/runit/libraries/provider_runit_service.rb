@@ -44,6 +44,7 @@ class Chef
           @log_main_dir = nil
           @default_log_dir = nil
           @log_run_script = nil
+          @log_config_file = nil
           @env_dir = nil
           @env_files = nil
           @finish_script = nil
@@ -93,6 +94,8 @@ class Chef
           load_new_resource_state
           @new_resource.enabled(true)
           restart_service if @new_resource.restart_on_update and run_script.updated_by_last_action?
+          restart_log_service if @new_resource.restart_on_update and log_run_script.updated_by_last_action?
+          restart_log_service if @new_resource.restart_on_update and log_config_file.updated_by_last_action?
         end
 
         def configure_service
@@ -108,6 +111,7 @@ class Chef
               log_main_dir.run_action(:create)
               default_log_dir.run_action(:create) if new_resource.default_logger
               log_run_script.run_action(:create)
+              log_config_file.run_action(:create)
             else
               Chef::Log.debug("log not specified for #{new_resource.service_name}, continuing")
             end
@@ -118,7 +122,6 @@ class Chef
               env_files.each {|file| file.run_action(:create)}
             else
               Chef::Log.debug("Environment not specified for #{new_resource.service_name}, continuing")
-
             end
 
             if new_resource.finish
@@ -142,15 +145,21 @@ class Chef
         end
 
         def enable_service
-          unless node['platform'] == 'gentoo'
-            Chef::Log.debug("Creating symlink in service_dir for #{new_resource.service_name}")
-            service_link.run_action(:create)
-          end
+          Chef::Log.debug("Creating symlink in service_dir for #{new_resource.service_name}")
+          service_link.run_action(:create)
 
           Chef::Log.debug("waiting until named pipe #{service_dir_name}/supervise/ok exists.")
           until ::FileTest.pipe?("#{service_dir_name}/supervise/ok") do
             sleep 1
             Chef::Log.debug(".")
+          end
+
+          if new_resource.log
+            Chef::Log.debug("waiting until named pipe #{service_dir_name}/log/supervise/ok exists.")
+            until ::FileTest.pipe?("#{service_dir_name}/log/supervise/ok") do
+              sleep 1
+              Chef::Log.debug(".")
+            end
           end
         end
 
@@ -173,8 +182,16 @@ class Chef
           shell_out!("#{new_resource.sv_bin} restart #{service_dir_name}")
         end
 
+        def restart_log_service
+          shell_out!("#{new_resource.sv_bin} restart #{service_dir_name}/log")
+        end
+
         def reload_service
           shell_out!("#{new_resource.sv_bin} force-reload #{service_dir_name}")
+        end
+
+        def reload_log_service
+          shell_out!("#{new_resource.sv_bin} force-reload #{service_dir_name}/log")
         end
 
         #
@@ -227,8 +244,17 @@ class Chef
           (cmd.stdout =~ /^run:/ && cmd.exitstatus == 0)
         end
 
+        def log_running?
+          cmd = shell_out("#{new_resource.sv_bin} status #{new_resource.service_name}/log")
+          (cmd.stdout =~ /^run:/ && cmd.exitstatus == 0)
+        end
+
         def enabled?
           ::File.exists?(::File.join(service_dir_name, "run"))
+        end
+
+        def log_service_name
+          ::File.join(new_resource.service_name, "log")
         end
 
         def sv_dir_name
@@ -237,6 +263,10 @@ class Chef
 
         def service_dir_name
           ::File.join(new_resource.service_dir, new_resource.service_name)
+        end
+
+        def log_dir_name
+          ::File.join(new_resource.service_dir, new_resource.service_name, log)
         end
 
         def template_cookbook
@@ -335,6 +365,27 @@ EOF
           @log_run_script
         end
 
+        def log_config_file
+          return @log_config_file unless @log_config_file.nil?
+          @log_config_file = Chef::Resource::Template.new(::File.join(sv_dir_name, 'log', 'config'), run_context)
+          @log_config_file.owner(new_resource.owner)
+          @log_config_file.group(new_resource.group)
+          @log_config_file.mode(00644)
+          @log_config_file.cookbook("runit")
+          @log_config_file.source("log-config.erb")
+          @log_config_file.variables({
+            :size => new_resource.log_size,
+            :num => new_resource.log_num,
+            :min => new_resource.log_min,
+            :timeout => new_resource.log_timeout,
+            :processor => new_resource.log_processor,
+            :socket => new_resource.log_socket,
+            :prefix => new_resource.log_prefix,
+            :append => new_resource.log_config_append
+          })
+          @log_config_file
+        end
+
         def env_dir
           return @env_dir unless @env_dir.nil?
           @env_dir = Chef::Resource::Directory.new(::File.join(sv_dir_name, 'env'), run_context)
@@ -401,11 +452,10 @@ EOF
 
         def lsb_init
           return @lsb_init unless @lsb_init.nil?
+          initfile = ::File.join(new_resource.lsb_init_dir, new_resource.service_name)
           if node['platform'] == 'debian'
-            @lsb_init = Chef::Resource::Template.new(::File.join( '/etc',
-                                                                  'init.d',
-                                                                  new_resource.service_name),
-                                                      run_context)
+            ::File.unlink(initfile) if ::File.symlink?(initfile)
+            @lsb_init = Chef::Resource::Template.new(initfile, run_context)
             @lsb_init.owner('root')
             @lsb_init.group('root')
             @lsb_init.mode(00755)
@@ -413,10 +463,7 @@ EOF
             @lsb_init.source('init.d.erb')
             @lsb_init.variables(:name => new_resource.service_name)
           else
-            @lsb_init = Chef::Resource::Link.new(::File.join( '/etc',
-                                                              'init.d',
-                                                              new_resource.service_name),
-                                                  run_context)
+            @lsb_init = Chef::Resource::Link.new(initfile, run_context)
             @lsb_init.to(new_resource.sv_bin)
           end
           @lsb_init

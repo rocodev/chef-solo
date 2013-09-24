@@ -39,42 +39,49 @@ end
 case node["platform_family"]
 when "rhel"
 
-  include_recipe "build-essential"
-  # `rpmdevtools` is in EPEL repo in EL <= 5
-  include_recipe "yum::epel" if node["platform_version"].to_i <= 5
-
-  packages = %w{rpm-build rpmdevtools tar gzip}
-  packages.each do |p|
-    package p
-  end
-
-  if node["platform_version"].to_i >= 6
-    package "glibc-static"
+  if node['runit']['use_package_from_yum']
+    package 'runit'
   else
-    package "buildsys-macros"
-  end
+    include_recipe "build-essential"
+    # `rpmdevtools` is in EPEL repo in EL <= 5
+    include_recipe "yum::epel" if node["platform_version"].to_i <= 5
 
-  cookbook_file "#{Chef::Config[:file_cache_path]}/runit-2.1.1.tar.gz" do
-    source "runit-2.1.1.tar.gz"
-    not_if "rpm -qa | grep -q '^runit'"
-    notifies :run, "bash[rhel_build_install]", :immediately
-  end
+    packages = %w{rpm-build rpmdevtools tar gzip}
+    packages.each do |p|
+      package p
+    end
 
-  bash "rhel_build_install" do
-    user "root"
-    cwd Chef::Config[:file_cache_path]
-    code <<-EOH
-      tar xzf runit-2.1.1.tar.gz
-      cd runit-2.1.1
-      ./build.sh
-    EOH
-    notifies :install, "rpm_package[runit-211]", :immediately
-    action :nothing
-  end
+    if node["platform_version"].to_i >= 6
+      package "glibc-static"
+    else
+      package "buildsys-macros"
+    end
 
-  rpm_package "runit-211" do
-    source "/root/rpmbuild/RPMS/runit-2.1.1.rpm"
-    action :nothing
+    rpm_installed = "rpm -qa | grep -q '^runit'"
+    cookbook_file "#{Chef::Config[:file_cache_path]}/runit-2.1.1.tar.gz" do
+      source "runit-2.1.1.tar.gz"
+      not_if rpm_installed
+      notifies :run, "bash[rhel_build_install]", :immediately
+    end
+
+    bash "rhel_build_install" do
+      user "root"
+      cwd Chef::Config[:file_cache_path]
+      code <<-EOH
+        tar xzf runit-2.1.1.tar.gz
+        cd runit-2.1.1
+        ./build.sh
+      EOH
+      notifies :install, "rpm_package[runit-211]", :immediately
+      action :run
+      not_if rpm_installed
+    end
+
+    rpm_root_dir = `rpm --eval "%{_rpmdir}"`
+    rpm_package "runit-211" do
+      source rpm_root_dir.strip + "/runit-2.1.1.rpm"
+      action :nothing
+    end
   end
 
 when "debian","gentoo"
@@ -83,6 +90,10 @@ when "debian","gentoo"
     template "/etc/init.d/runit-start" do
       source "runit-start.sh.erb"
       mode 0755
+    end
+
+    service "runit-start" do
+      action :nothing
     end
   end
 
@@ -104,6 +115,9 @@ when "debian","gentoo"
       "debian" => { "squeeze/sid" => :run, "default" => :nothing },
       "default" => :nothing
     ), "execute[runit-hup-init]", :immediately
+    if platform?("gentoo")
+      notifies :enable, "service[runit-start]"
+    end
   end
 
   if node["platform"] =~ /ubuntu/i && node["platform_version"].to_f <= 8.04

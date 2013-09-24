@@ -95,11 +95,19 @@ exec 2> >(cat_error)
 
 step "Install nessesary packages"
 run apt-get update
-run aptitude install -y git-core libgdbm-dev pkg-config libffi-dev \
-  build-essential openssl libreadline6 libreadline6-dev zlib1g zlib1g-dev \
-  libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev \
-  autoconf libc6-dev ncurses-dev automake libtool bison ssl-cert wget curl \
-  libmysqlclient-dev
+run aptitude install -y \
+  libgdbm-dev libyaml-dev libffi-dev \
+  libncurses5-dev libtool pkg-config \
+  gawk autoconf automake bison \
+  python-software-properties \
+  build-essential zlib1g-dev \
+  libxslt1-dev libxml2-dev \
+  sqlite3 libsqlite3-dev \
+  libssl-dev openssl \
+  curl wget git-core \
+  libmysqlclient-dev \
+  libreadline-dev \
+  openssh-server
 
 step "Install/Upgrade rvm in /usr/local/rvm"
 if [ -d /usr/local/rvm ]; then

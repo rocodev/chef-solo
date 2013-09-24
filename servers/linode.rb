@@ -6,5 +6,5 @@ ssh_options(:keys => '~/.ssh/chef_deploy_key')
 node.set[:name] = 'linode'
 
 run_list [ 'role[basebox]',
-           'role[webserver]',
+           'role[web-box]',
            'role[monitor]' ]

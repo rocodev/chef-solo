@@ -1,13 +1,16 @@
 name "webserver"
 
 run_list [ "recipe[memcached]",
+           "recipe[nodejs]",
            "recipe[nginx]",
-           "recipe[projects]",
-           "recipe[nodejs]" ]
+           "recipe[projects]" ]
 
 default_attributes(
   :memcached => {
     :memory => 64
+  },
+  :nodejs => {
+    :install_method => "package"
   },
   :nginx => {
     :version => "1.2.7",
@@ -29,7 +32,4 @@ default_attributes(
       :max_pool_size => "4"
     }
   },
-  :nodejs => {
-    :make_threads => 2,
-  }
 )

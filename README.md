@@ -56,7 +56,7 @@ cookbooks 照以上方式管理，使用網頁界面或 Git GUI 看 cookbooks �
         users
         rvm::system
 
-* webserver - 網站前端伺服器
+* web-box - 網站前端伺服器
 
         memcached
         nginx + passenger

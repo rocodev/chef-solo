@@ -23,13 +23,10 @@ Vagrant.configure("2") do |config|
       chef.log_level      = :debug
       # Specify custom Run List:
       chef.add_role "basebox"
+      chef.add_role "web-box"
       chef.add_role "dev-box"
       # Specify custom JSON attributes:
-      chef.json = {
-        :projects => [
-          { :name => "sample", :enabled => true }
-        ]
-      }
+      chef.json = { }
     end
   end
 

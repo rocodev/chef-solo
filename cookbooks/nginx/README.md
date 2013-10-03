@@ -101,6 +101,10 @@ config file.
   value of `server_names_hash_bucket_size`.
 * `node['nginx']['disable_access_log']` - set to true to disable the
   general access log, may be useful on high traffic sites.
+* `node['nginx']['access_log_options']` - Set to a string of additional options
+  to be appended to the access log directive
+* `node['nginx']['error_log_options']` - Set to a string of additional options
+  to be appended to the error log directive
 * `node['nginx']['default_site_enabled']` - enable the default site
 * `node['nginx']['sendfile']` - Whether to use `sendfile`. Defaults to "on".
 * `node['nginx']['install_method']` - Whether nginx is installed from
@@ -137,7 +141,11 @@ Rate Limiting attributes:
 * `node['nginx']['gzip_http_version']` - used for config value of `gzip_http_version`.
 * `node['nginx']['gzip_comp_level']` - used for config value of `gzip_comp_level`.
 * `node['nginx']['gzip_proxied']` - used for config value of `gzip_proxied`.
+* `node['nginx']['gzip_vary']` - used for config value of `gzip_vary`.
+* `node['nginx']['gzip_buffers']` - used for config value of `gzip_buffers`.
 * `node['nginx']['gzip_types']` - used for config value of `gzip_types` - must be an Array.
+* `node['nginx']['gzip_min_length']` - used for config value of `gzip_min_length`.
+* `node['nginx']['gzip_disable']` - used for config value of `gzip_disable`.
 
 ### Attributes set in recipes
 
@@ -226,6 +234,13 @@ recipe.
 * `node['nginx']['upload_progress']['url']` - URL for the tarball.
 * `node['nginx']['upload_progress']['checksum']` - Checksum of the
   tarball.
+* `node['nginx']['upload_progress']['javascript_output']` - Output in javascript.
+  Default is `true` for backwards compatibility.
+* `node['nginx']['upload_progress']['zone_name']` - Zone name which will
+  be used to store the per-connection tracking information.
+  Default is `proxied`.
+* `node['nginx']['upload_progress']['zone_size']` - Zone size in bytes.
+  Default is `1m` (1 megabyte).
 
 ## passenger.rb
 
@@ -239,8 +254,6 @@ These attributes are used in the `nginx::passenger` recipe.
   use (default=`$(which ruby)`)
 * `node['nginx']['passenger']['spawn_method']` - passenger spawn
   method to use (default=`smart-lv2`)
-* `node['nginx']['passenger']['use_global_queue']` - turns on or off
-  global queuing (default=`on`)
 * `node['nginx']['passenger']['buffer_response']` - turns on or off
   response buffering (default=`on`)
 * `node['nginx']['passenger']['max_pool_size']` - passenger maximum
@@ -262,6 +275,21 @@ These attributes are used in the `nginx::http_echo_module` recipe.
   want (default: 0.40)
 * `node['nginx']['echo']['url']` - URL for the tarball.
 * `node['nginx']['echo']['checksum']` - Checksum of the tarball.
+
+## status.rb
+
+These attributes are used in the `nginx::http_stub_status_module` recipe.
+
+* `node['nginx']['status']['port']` - The port on which nginx will
+  serve the status info (default: 8090)
+
+## openssl_source.rb
+
+These attributes are used in the `nginx::openssl_source` recipe.
+
+* `node['nginx']['openssl_source']['version']` - The version of OpenSSL
+  you want to download and use (default: 1.0.1e)
+* `node['nginx']['openssl_source']['url']` - The url for the OpenSSL source
 
 Recipes
 =======
@@ -347,6 +375,8 @@ attribute `node['nginx']['source']['modules']`.
   "`mod_passenger`".
 * `upload_progress_module.rb` - builds the `upload_progress` module
   and enables it as a module when compiling nginx.
+* `openssl_source.rb` - downloads and uses custom OpenSSL source
+  when compiling nginx
 
 Adding New Modules
 ------------------

@@ -16,9 +16,9 @@
 #
 
 packages = value_for_platform( ["redhat", "centos", "scientific", "amazon", "oracle"] => {
-                                 "default" => %w(ruby-devel curl-devel) },
+                                 "default" => %w(curl-devel) },
                                ["ubuntu", "debian"] => {
-                                 "default" => %w(ruby-dev libcurl4-gnutls-dev) } )
+                                 "default" => %w(libcurl4-gnutls-dev) } )
 
 packages.each do |devpkg|
   package devpkg
@@ -41,7 +41,6 @@ template "#{node["nginx"]["dir"]}/conf.d/passenger.conf" do
     :passenger_root => node["nginx"]["passenger"]["root"],
     :passenger_ruby => node["nginx"]["passenger"]["ruby"],
     :passenger_spawn_method => node["nginx"]["passenger"]["spawn_method"],
-    :passenger_use_global_queue => node["nginx"]["passenger"]["use_global_queue"],
     :passenger_buffer_response => node["nginx"]["passenger"]["buffer_response"],
     :passenger_max_pool_size => node["nginx"]["passenger"]["max_pool_size"],
     :passenger_min_instances => node["nginx"]["passenger"]["min_instances"],

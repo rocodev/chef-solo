@@ -73,6 +73,8 @@ default['nginx']['gzip_types']        = [
   "application/json",
   "text/mathml"
 ]
+default['nginx']['gzip_min_length']   = 1000
+default['nginx']['gzip_disable']      = "MSIE [1-6]\."
 
 default['nginx']['keepalive']          = "on"
 default['nginx']['keepalive_timeout']  = 65
@@ -85,6 +87,8 @@ default['nginx']['server_tokens']      = nil
 default['nginx']['server_names_hash_bucket_size'] = 64
 default['nginx']['sendfile'] = 'on'
 
+default['nginx']['access_log_options'] = nil
+default['nginx']['error_log_options'] = nil
 default['nginx']['disable_access_log'] = false
 default['nginx']['install_method'] = 'package'
 default['nginx']['default_site_enabled'] = true

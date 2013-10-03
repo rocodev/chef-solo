@@ -1,9 +1,10 @@
 #
 # Cookbook Name:: nginx
-# Recipe:: default
-# Author:: AJ Christensen <aj@junglist.gen.nz>
+# Attributes:: devel
 #
-# Copyright 2008-2012, Opscode, Inc.
+# Author:: Arthur Freyman (<afreyman@riotgames.com>)
+#
+# Copyright 2013, Riot Games
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,16 +19,6 @@
 # limitations under the License.
 #
 
-case node['nginx']['install_method']
-when 'source'
-  include_recipe 'nginx::source'
-  include_recipe 'nginx::ohai_plugin'
-when 'package'
-  include_recipe 'nginx::package'
-  include_recipe 'nginx::ohai_plugin'
-end
-
-service 'nginx' do
-  supports :status => true, :restart => true, :reload => true
-  action :start
-end
+default['nginx']['devel']['version']  = "0.2.18"
+default['nginx']['devel']['url']      = "https://github.com/simpl/ngx_devel_kit/archive/v#{node['nginx']['devel']['version']}.tar.gz"
+default['nginx']['devel']['checksum'] = "c9c9f0a1b068d38c6c45b15d9605f1b2344dbcd45abf0764cd8e2ba92d6a3d2c"

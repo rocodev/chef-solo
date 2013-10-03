@@ -160,9 +160,8 @@ step "Setup permission for chef no password sudo running chef-solo"
 echo "chef ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/chef
 run chmod 0440 /etc/sudoers.d/chef
 
-step "Configure ssh to prevent password & root logins"
+step "Configure ssh disallow root logins"
 sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
 run service ssh restart
 
 echo "The system is bootstrapped." > /root/.bootstrapped

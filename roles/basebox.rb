@@ -25,7 +25,8 @@ default_attributes(
       :auth_keys => [ "v1nc3ntlaw" ]
     },
     :apps => {
-      :auth_keys => [ "v1nc3ntlaw", "xdite", "bc" ]
+      :auth_keys => [ "v1nc3ntlaw", "xdite", "bc" ],
+      :password  => "i$1$SGC2NZiP$1HXugO8P3xF7RyQoWcEGK."
     }
   },
   # recipe[rvm]

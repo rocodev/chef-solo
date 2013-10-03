@@ -3,6 +3,7 @@ user "apps" do
   home    "/home/apps"
   shell   "/bin/bash"
   uid     1011
+  password node[:users][:apps][:password]
   supports :manage_home => true
   action  [ :create, :manage ]
 end

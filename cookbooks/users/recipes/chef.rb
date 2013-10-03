@@ -3,6 +3,7 @@ user "chef" do
   home    "/home/chef"
   shell   "/bin/bash"
 
+
   supports :manage_home => true
   action  [ :create, :manage ]
 end

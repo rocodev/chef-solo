@@ -16,6 +16,6 @@ default_attributes(
   # recipe[nginx]
   :nginx => {
     :server_tokens => "on",
-    :default_site_enabled => on,
+    :default_site_enabled => true,
   }
 )

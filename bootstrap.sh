@@ -18,7 +18,7 @@ fi
 
 # ==================================================
 # Config
-ruby_version='ruby-1.9.3-p448'
+ruby_version='ruby-2.0.0-p247'
 gems=(bundler chef)
 chef_user=chef
 chef_group=chef

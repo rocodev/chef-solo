@@ -27,6 +27,8 @@ Vagrant.configure("2") do |config|
       chef.add_role "web-box"
       chef.add_role "dev-box"
       chef.add_recipe "percona::server"
+      chef.add_recipe "redisio::install"
+      chef.add_recipe "redisio::enable"
       # Specify custom JSON attributes:
       chef.json = {
         :percona => {

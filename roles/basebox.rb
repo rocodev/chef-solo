@@ -3,6 +3,7 @@ name "basebox"
 run_list [ "recipe[base]",
            "recipe[sudo]",
            "recipe[users]",
+           "recipe[ulimit]",
            "recipe[rvm::system]" ]
 
 default_attributes(
@@ -27,6 +28,14 @@ default_attributes(
     :apps => {
       :auth_keys => [ "v1nc3ntlaw", "xdite", "bc" ],
       :password  => "i$1$SGC2NZiP$1HXugO8P3xF7RyQoWcEGK."
+    }
+  },
+  # recipe[ulimit]
+  :ulimit => {
+    :users => {
+      :apps => {
+        :filehandle_limit => 8192,
+      }
     }
   },
   # recipe[rvm]

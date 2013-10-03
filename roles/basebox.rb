@@ -34,6 +34,7 @@ default_attributes(
     :global_gems => [
       { 'name' => 'bundler' },
       { 'name' => 'chef' },
+      { 'name' => 'ruby-shadow' },
     ]
   }
 )

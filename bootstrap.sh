@@ -19,7 +19,7 @@ fi
 # ==================================================
 # Config
 ruby_version='ruby-2.0.0-p247'
-gems=(bundler chef)
+gems=(bundler chef ruby-shadow)
 chef_user=chef
 chef_group=chef
 

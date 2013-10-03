@@ -11,6 +11,7 @@ file_backup_path       File.join(dir,     'solo/backup')
 cookbook_path        [ File.join(top_dir, 'cookbooks') ]
 role_path            [ File.join(top_dir, 'roles') ]
 client_key             File.join(dir,     'insecure_client_key.pem')
+encrypted_data_bag_secret File.join(dir,  'encrypted_data_bag_secret')
 
 # configurations for connecting chef-server
 #

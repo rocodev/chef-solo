@@ -4,6 +4,7 @@
 /.chef/solo/cache/checksums
 /.chef/solo/cache/files
 /.chef/solo/cache/backup
+/.chef/encrypted_data_bag_secret
 /.vagrant
 /json/servers
 *.swp

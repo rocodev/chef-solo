@@ -21,6 +21,7 @@ Vagrant.configure("2") do |config|
       chef.roles_path     = "roles"
       chef.data_bags_path = "data_bags"
       chef.log_level      = :debug
+      chef.encrypted_data_bag_secret_key_path = '.chef/encrypted_data_bag_secret'
       # Specify custom Run List:
       chef.add_role "basebox"
       chef.add_role "web-box"

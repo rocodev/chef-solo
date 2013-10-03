@@ -22,6 +22,7 @@ default_attributes(
     :client_max_body_size => "34m",
     :event => "epoll",
     :server_tokens => "off",
+    :default_site_enabled => false,
     :install_method => "source",
     :configure_flags => [ "--with-http_spdy_module" ],
     :source => {

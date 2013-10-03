@@ -1,7 +1,5 @@
 name "dev-box"
 
-run_list [ "recipe[sudo]" ]
-
 default_attributes(
   # recipe[sudo]
   :authorization => {
@@ -14,5 +12,9 @@ default_attributes(
       :passwordless => true,
       :include_sudoers_d => true
     }
+  },
+  # recipe[nginx]
+  :nginx => {
+    :server_tokens => "on",
   }
 )

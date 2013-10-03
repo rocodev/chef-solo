@@ -26,8 +26,14 @@ Vagrant.configure("2") do |config|
       chef.add_role "basebox"
       chef.add_role "web-box"
       chef.add_role "dev-box"
+      chef.add_recipe "percona::server"
       # Specify custom JSON attributes:
-      chef.json = { }
+      chef.json = {
+        :percona => {
+          :main_config_file => "/etc/mysql/my.cnf",
+          :encrypted_data_bag => "rocodev"
+        }
+      }
     end
   end
 

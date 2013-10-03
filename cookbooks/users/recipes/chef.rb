@@ -2,6 +2,7 @@
 user "chef" do
   home    "/home/chef"
   shell   "/bin/bash"
+
   supports :manage_home => true
   action  [ :create, :manage ]
 end
@@ -22,11 +23,20 @@ template "/home/chef/.ssh/config" do
   action :create
 end
 
+auth_keys = []
+node[:users][:chef][:auth_keys].each do |user_id|
+  data = data_bag_item("public-keys", user_id)
+  auth_keys << data["public_key"]
+end
+
 template "/home/chef/.ssh/authorized_keys" do
-  source "ssh/authorized_keys/chef.erb"
+  source "ssh/authorized_keys.erb"
   owner "chef"
   group "chef"
   mode 0600
+  variables({
+    :auth_keys => auth_keys
+  })
   action :create
 end
 

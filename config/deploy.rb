@@ -1,14 +1,15 @@
 require 'bundler/capistrano'
-set :bundle_without, [:deployment]
+set :bundle_without, [:deployment, :development]
 set :bundle_flags, '--quiet --deployment'
+set :normalize_asset_timestamps, false
 
 default_run_options[:pty] = true
 
 depend :remote, :command, 'ruby'
 
 ssh_options[:forward_agent] = true
-set :application, "rocodev-chef-repo"
-set :deploy_to, "/srv/rocodev-chef-repo"
+set :application, "chef-solo"
+set :deploy_to,   "/home/chef/chef-solo"
 set :scm, :git
 
 # Package the repository and upload to server
@@ -23,15 +24,8 @@ set :copy_exclude, ['.git/*', 'vendor/*']
 # set :checkout, 'export'
 # set :deploy_via, :remote_cache
 
-set :default_environment, {
-  'PATH' => "/usr/local/rvm/gems/ruby-1.9.3-p392/bin:/usr/local/rvm/gems/ruby-1.9.3-p392@global/bin:/usr/local/rvm/rubies/ruby-1.9.3-p392/bin:/usr/local/rvm/bin:$PATH",
-  'RUBY_VERSION' => 'ruby 1.9.3-p392',
-  'GEM_HOME'     => '/usr/local/rvm/gems/ruby-1.9.3-p392',
-  'GEM_PATH'     => '/usr/local/rvm/gems/ruby-1.9.3-p392'
-}
-
 set :branch, 'master'
-set :keep_releases, 2
+set :keep_releases, 60
 set :user, "ubuntu"
 set :use_sudo, true
 
@@ -106,11 +100,22 @@ namespace :chef do
 
   task :default do
     generate_json
-    cmd = ["chef-solo -c #{current_release}/solo.rb -j #{current_release}/json/servers/$CAPISTRANO:HOST$.json -l info > #{shared_path}/log/#{release_name}.log"].join(' && ')
+    cmd = "chef-solo -c #{current_release}/solo.rb -j #{current_release}/json/servers/$CAPISTRANO:HOST$.json -l info > #{shared_path}/log/#{release_name}.log"
     run "#{try_sudo} bash -l -c '#{cmd}'"
+  end
+
+  task :upload_secret_key do
+    upload ".chef/encrypted_data_bag_secret", "#{shared_path}/cache/encrypted_data_bag_secret"
+    run "ln -sfn #{shared_path}/cache/encrypted_data_bag_secret #{current_release}/.chef/encrypted_data_bag_secret"
+  end
+
+  task :remove_secret_key do
+    run "rm #{shared_path}/cache/encrypted_data_bag_secret"
   end
 end
 
-after 'deploy:setup', 'deploy:setup_directory_owner'
+after 'deploy:setup',  'deploy:setup_directory_owner'
 after 'deploy:update', 'deploy:symlink_cache_dir'
+after 'deploy:update', 'chef:upload_secret_key'
+after 'deploy', 'chef:remove_secret_key'
 after 'deploy', 'deploy:cleanup'

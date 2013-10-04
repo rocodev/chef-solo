@@ -25,5 +25,6 @@ node.set[:percona] = {
 node.set[:projects] = [
   { :name => "accounting-book", :enabled => true },
   { :name => "goldmine",        :enabled => true },
-  { :name => "audiophile",      :enabled => true }
+  { :name => "audiophile",      :enabled => true },
+  { :name => "bumblr",          :enabled => true }
 ]

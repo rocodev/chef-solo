@@ -26,7 +26,7 @@ default_attributes(
       :auth_keys => [ "v1nc3ntlaw" ]
     },
     :apps => {
-      :auth_keys => [ "v1nc3ntlaw", "xdite", "bc" ],
+      :auth_keys => [ "v1nc3ntlaw", "xdite", "bc", "tonilin" ],
       :password  => "$6$i3NIuKNf$ddMUJRkDZc4HMer0UXIYmAjrSAWtw9z36QFWcYGugMQNipic2HslDtYZ7HOTD8YI6VDxe2MQxfIKKQMejWG2j1"
     }
   },

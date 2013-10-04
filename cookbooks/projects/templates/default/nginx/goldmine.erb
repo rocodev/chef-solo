@@ -1,0 +1,14 @@
+# This file is managed by Chef for <%= @node[:hostname] %>
+# Do NOT modify this file directly.
+# Or remember apply changes to Chef configs.
+
+server {
+  listen 80;
+  server_name app.goldmine.io;
+
+  root /home/apps/goldmine/current/public;
+  passenger_enabled on;
+
+  access_log /var/log/nginx/goldmine/access.log;
+  error_log  /var/log/nginx/goldmine/error.log;
+}

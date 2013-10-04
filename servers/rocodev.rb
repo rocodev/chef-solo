@@ -23,5 +23,6 @@ node.set[:percona] = {
 
 # recipe[projects]
 node.set[:projects] = [
-  { :name => "accounting-book", :enabled => true }
+  { :name => "accounting-book", :enabled => true },
+  { :name => "goldmine",        :enabled => true }
 ]

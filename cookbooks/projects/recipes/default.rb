@@ -9,6 +9,13 @@
 
 # setup and enable project nginx config
 node[:projects].each do |project|
+  directory "#{node['nginx']['log_dir']}/#{project[:name]}" do
+    group "root"
+    owner "root"
+    mode   0755
+    recursive true
+  end
+
   template "#{node['nginx']['dir']}/sites-available/#{project[:name]}" do
     source "nginx/#{project[:name]}.erb"
     owner "root"

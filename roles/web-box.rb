@@ -1,6 +1,8 @@
 name "web-box"
 
-run_list [ "recipe[memcached]",
+run_list [ "recipe[imagemagick]",
+           "recipe[imagemagick::devel]",
+           "recipe[memcached]",
            "recipe[nodejs]",
            "recipe[nginx]" ]
 

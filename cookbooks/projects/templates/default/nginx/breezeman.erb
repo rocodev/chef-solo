@@ -1,0 +1,16 @@
+# This file is managed by Chef for <%= @node[:hostname] %>
+# Do NOT modify this file directly.
+# Or remember apply changes to Chef configs.
+
+server {
+  listen 80;
+  server_name bm.rocodev.net;
+
+  root /home/apps/breezeman/current/public;
+
+  passenger_enabled on;
+  rails_env staging;
+
+  access_log /var/log/nginx/breezeman/access.log;
+  error_log  /var/log/nginx/breezeman/error.log;
+}

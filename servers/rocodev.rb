@@ -15,6 +15,11 @@ run_list [
   'recipe[projects]'
 ]
 
+# recipe[base]
+node.set[:base] = {
+  :packages => [ "sphinxsearch" ]
+}
+
 # recipe[percona::server]
 node.set[:percona] = {
   :main_config_file => "/etc/mysql/my.cnf",

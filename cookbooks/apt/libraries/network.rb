@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: apt
-# Resource:: preference
+# library:: network
 #
-# Copyright 2010-2013, Opscode, Inc.
+# Copyright 2013, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,17 @@
 # limitations under the License.
 #
 
-actions :add, :remove
-
-def initialize(*args)
-  super
-  @action = :add
+module ::Apt
+  def interface_ipaddress(host, interface)
+    if interface
+      addresses = host['network']['interfaces'][interface]['addresses']
+      addresses.select do |ip, data|
+        if data['family'].eql?('inet')
+          return ip
+        end
+      end
+    else
+      return host.ipaddress
+    end
+  end
 end
-
-attribute :package_name, :kind_of => String, :name_attribute => true
-attribute :glob, :kind_of => String
-attribute :pin, :kind_of => String
-attribute :pin_priority, :kind_of => String

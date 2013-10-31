@@ -17,7 +17,7 @@ run_list [
 
 # recipe[base]
 node.set[:base] = {
-  :packages => [ "sphinxsearch" ]
+  :packages => [ "sphinxsearch", "libarchive-dev" ]
 }
 
 node.set[:rvm] = {

@@ -12,12 +12,13 @@ run_list [
   'recipe[redisio::install]',
   'recipe[redisio::enable]',
 
-  'recipe[projects]'
+  'recipe[projects]',
+  'recipe[elasticsearch::deb]'
 ]
 
 # recipe[base]
 node.set[:base] = {
-  :packages => [ "sphinxsearch", "libarchive-dev" ]
+  :packages => [ "sphinxsearch", "libarchive-dev", "openjdk-7-jre-headless" ]
 }
 
 node.set[:rvm] = {

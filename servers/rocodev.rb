@@ -20,6 +20,10 @@ node.set[:base] = {
   :packages => [ "sphinxsearch" ]
 }
 
+node.set[:rvm] = {
+  :rubies => [ "ruby-1.9.3-p448" ]
+}
+
 # recipe[percona::server]
 node.set[:percona] = {
   :main_config_file => "/etc/mysql/my.cnf",

@@ -13,7 +13,10 @@ run_list [
   'recipe[redisio::enable]',
 
   'recipe[projects]',
-  'recipe[elasticsearch::deb]'
+
+  # for shuttle project
+  'recipe[postgresql::server]',
+  'recipe[elasticsearch::deb]',
 ]
 
 # recipe[base]
@@ -21,6 +24,7 @@ node.set[:base] = {
   :packages => [ "sphinxsearch", "libarchive-dev", "openjdk-7-jre-headless" ]
 }
 
+# recipe[rvm]
 node.set[:rvm] = {
   :rubies => [ "ruby-1.9.3-p448" ]
 }
@@ -29,6 +33,15 @@ node.set[:rvm] = {
 node.set[:percona] = {
   :main_config_file => "/etc/mysql/my.cnf",
   :encrypted_data_bag => "rocodev"
+}
+
+# recipe[postgresql::server]
+node.set[:postgresql] = {
+  :password => {
+    # run this from a linux commandline generate password hash
+    # echo -n '=>password<=''postgres' | openssl md5 | sed -e 's/.* /md5/'
+    :postgres => "md580cccdd9bec5d6c8025d892d93c080cf"
+  }
 }
 
 # recipe[projects]

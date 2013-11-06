@@ -1,9 +1,10 @@
 #
 # Cookbook Name:: nginx
 # Recipe:: common/conf
+#
 # Author:: AJ Christensen <aj@junglist.gen.nz>
 #
-# Copyright 2008-2012, Opscode, Inc.
+# Copyright 2008-2013, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +19,12 @@
 # limitations under the License.
 #
 
-template "nginx.conf" do
-  path "#{node['nginx']['dir']}/nginx.conf"
-  source "nginx.conf.erb"
-  owner "root"
-  group "root"
-  mode 00644
+template 'nginx.conf' do
+  path   "#{node['nginx']['dir']}/nginx.conf"
+  source 'nginx.conf.erb'
+  owner  'root'
+  group  'root'
+  mode   '0644'
   notifies :reload, 'service[nginx]'
 end
 
@@ -35,10 +36,10 @@ template "/etc/logrotate.d/nginx" do
 end
 
 template "#{node['nginx']['dir']}/sites-available/default" do
-  source "default-site.erb"
-  owner "root"
-  group "root"
-  mode 00644
+  source 'default-site.erb'
+  owner  'root'
+  group  'root'
+  mode   '0644'
   notifies :reload, 'service[nginx]'
 end
 

@@ -3,7 +3,7 @@
 # Recipe:: package
 # Author:: AJ Christensen <aj@junglist.gen.nz>
 #
-# Copyright 2008-2012, Opscode, Inc.
+# Copyright 2008-2013, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,8 +20,7 @@
 
 include_recipe 'nginx::ohai_plugin'
 
-case node['platform']
-when 'redhat','centos','scientific','amazon','oracle'
+if platform_family?('rhel')
   if node['nginx']['repo_source'] == 'epel'
     include_recipe 'yum::epel'
   elsif node['nginx']['repo_source'] == 'nginx'
@@ -31,7 +30,11 @@ when 'redhat','centos','scientific','amazon','oracle'
       level :debug
     end
   else
-    raise ArgumentError, "Unknown value '#{node['nginx']['repo_source']}' was passed to the nginx cookbook."
+    fail ArgumentError, "Unknown value '#{node['nginx']['repo_source']}' was passed to the nginx cookbook."
+  end
+elsif platform_family?('debian')
+  if node['nginx']['repo_source'] == 'nginx'
+    include_recipe 'nginx::repo'
   end
 end
 
@@ -41,7 +44,7 @@ end
 
 service 'nginx' do
   supports :status => true, :restart => true, :reload => true
-  action :enable
+  action   :enable
 end
 
 include_recipe 'nginx::commons'

@@ -56,6 +56,7 @@ node.set[:projects] = [
   { :name => "roco-official",   :enabled => true },
   { :name => "goldmine",        :enabled => true },
   { :name => "audiophile",      :enabled => true },
+  { :name => "redmine",         :enabled => true },
   { :name => "bumblr",          :enabled => true },
   { :name => "breezeman",       :enabled => true },
   { :name => "shuttle",         :enabled => true },

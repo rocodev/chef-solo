@@ -27,9 +27,12 @@ node.set[:base] = {
 # recipe[rvm]
 node.set[:rvm] = {
   :rubies => [ "ruby-1.9.3-p448" ],
-  :global_gems => [
-    { 'name' => 'whenever' },
-  ]
+  :gems => {
+    'ruby-2.0.0' => [
+      { 'name' => 'whenever' },
+      { 'name' => 'backup' },
+    ]
+  }
 }
 
 # recipe[percona::server]

@@ -23,10 +23,10 @@ default_attributes(
   # recipe[users]
   :users => {
     :chef => {
-      :auth_keys => [ "v1nc3ntlaw" ]
+      :auth_keys => [ "v1nc3ntlaw", "domon" ]
     },
     :apps => {
-      :auth_keys => [ "v1nc3ntlaw", "xdite", "bc", "tonilin" ],
+      :auth_keys => [ "v1nc3ntlaw", "xdite", "bc", "tonilin", "domon" ],
       :password  => "$6$i3NIuKNf$ddMUJRkDZc4HMer0UXIYmAjrSAWtw9z36QFWcYGugMQNipic2HslDtYZ7HOTD8YI6VDxe2MQxfIKKQMejWG2j1"
     }
   },

@@ -47,6 +47,7 @@ node.set[:postgresql] = {
 # recipe[projects]
 node.set[:projects] = [
   { :name => "accounting-book", :enabled => true },
+  { :name => "roco-official",   :enabled => true },
   { :name => "goldmine",        :enabled => true },
   { :name => "audiophile",      :enabled => true },
   { :name => "bumblr",          :enabled => true },

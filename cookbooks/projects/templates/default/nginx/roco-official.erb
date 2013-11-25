@@ -1,0 +1,20 @@
+# This file is managed by Chef for <%= @node[:hostname] %>
+# Do NOT modify this file directly.
+# Or remember apply changes to Chef configs.
+
+server {
+  listen 80;
+  server_name www.rocodev.com rocodev.com;
+
+  root /home/apps/roco-official/current/public ;
+  passenger_ruby /usr/local/rvm/wrappers/ruby-1.9.3-p448/ruby;
+  passenger_enabled on;
+
+  access_log /var/log/nginx/roco-official/access.log;
+  error_log  /var/log/nginx/roco-official/error.log;
+
+  if ($host ~* ^www\.(.*)) {
+    set $remove_www $1;
+    rewrite ^(.*)$ http://$remove_www$1 permanent;
+  }
+}

@@ -17,7 +17,7 @@ default_attributes(
   },
   # recipe[nginx]
   :nginx => {
-    :version => "1.4.2",
+    :version => "1.4.4",
     :worker_processes => 4,
     :worker_connections => "8192",
     :worker_rlimit_nofile => "32768",

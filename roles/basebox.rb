@@ -43,7 +43,7 @@ default_attributes(
     :default_ruby => 'ruby-2.0.0-p247',
     :global_gems => [
       { 'name' => 'bundler' },
-      { 'name' => 'chef' },
+      { 'name' => 'chef', 'version' => '11.8.0' },
       { 'name' => 'ruby-shadow' },
     ]
   }

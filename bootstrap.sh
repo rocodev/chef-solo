@@ -151,7 +151,7 @@ fi
 step "Setup chef deploy key"
 if [ ! -d /home/chef/.ssh ]; then
   run mkdir -p /home/chef/.ssh
-  echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCs1oCow7xvM4mSZBPv2AzLEOQQIss7j7HfaOFmLs0dlSGYb8ubRa/F4F8+CAqzZn0KEm7GRpBdrS0Q9zcNTHjHpKHVicIugQeqWP7tHNb493ICK3Tl7SPn0XOW4fa7Nc/q5u/u1fRB82m5SimNiqTw76JNe1yjz9HwCctVTNAdfAQW0Qgt4whvK4QCX1CTFFm4mpQMMTAvU7v53B4WPyOkZBWcEARDBjt27C2zrSUGrPx+vi0KRkPKFmqackSIODIGBJYwO7ikfJZj9AdRG4ieiOVNXyoVsKxd6jkErUtqJE7E0t8ztdJ5XAyZnCWbA0ib6kwS5KKslN9xkn5YNX9/ v1nc3ntlaw@rocodev.com" > /home/chef/.ssh/authorized_keys
+  echo "admin-chef-public-key" > /home/chef/.ssh/authorized_keys
   run chown -R "$chef_user:$chef_group" /home/chef/.ssh
   run chmod 0700 /home/chef/.ssh
 fi
